@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黄熠赫今天生日快乐呀！</title>
+<style>
+  :root {
+    --cream: #fff9f0;
+    --cream-deep: #fff1de;
+    --ink: #1d1d1f;
+    --muted: #6b6259;
+    --coral: #e8795c;
+    --coral-deep: #b85a3f;
+    --yellow: #ffd45e;
+    --mint: #dff3e8;
+    --mint-deep: #3f8c6b;
+    --white: #ffffff;
+    --spring: cubic-bezier(.2, 1.25, .35, 1);
+    --shadow: 0 24px 60px -24px rgba(184, 90, 63, .35);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  button { font: inherit; cursor: pointer; border: 0; }
+  .nav {
+    height: 76px;
+    padding: 0 clamp(20px, 6vw, 100px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,.82);
+    backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid rgba(232,121,92,.08);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; }
+  .logo-mark {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--coral); color: white;
+    display: grid; place-items: center;
+    font: 700 12px/1 ui-sans-serif, system-ui; letter-spacing: .04em;
+  }
+  .nav-links { display: flex; gap: 32px; font-size: 14px; color: var(--muted); }
+  .nav-links a { color: inherit; text-decoration: none; }
+  .nav-links a:hover { color: var(--coral); }
+  .pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 999px; font-weight: 800;
+    transition: transform 110ms ease-out, box-shadow 180ms ease;
+    touch-action: manipulation;
+  }
+  .pill:active { transform: scale(.96); }
+  .pill:focus-visible { outline: 3px solid rgba(232,121,92,.45); outline-offset: 3px; }
+  .nav-cta { height: 40px; padding: 0 20px; background: var(--yellow); color: var(--ink); font-size: 13px; }
+  .hero {
+    min-height: 760px;
+    padding: 64px clamp(20px, 7vw, 100px);
+    background: var(--cream-deep);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(32px, 5vw, 64px);
+  }
+  .open-note {
+    margin: 16px 0 0;
+    max-width: 560px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: #fff4dc;
+    color: #8a5a3d;
+    font-size: 16px;
+    line-height: 1.65;
+    font-weight: 600;
+    transform: rotate(-.6deg);
+    box-shadow: 0 10px 24px -18px rgba(184,90,63,.5);
+  }
+  .badge {
+    display: inline-flex; align-items: center; height: 34px;
+    padding: 0 14px; border-radius: 999px;
+    background: #ffe3c7; color: var(--coral-deep);
+    font: 600 12px/1 ui-sans-serif, system-ui; letter-spacing: .06em;
+  }
+  h1 { margin: 22px 0 0; font-size: clamp(48px, 6.5vw, 84px); line-height: 1.08; letter-spacing: -.035em; }
+  .hello { margin: 4px 0 0; color: var(--coral); font-size: clamp(40px, 5.2vw, 66px); line-height: 1.15; letter-spacing: -.03em; font-weight: 800; }
+  .sub { margin: 20px 0 0; font-size: clamp(17px, 1.7vw, 22px); font-weight: 600; }
+  .desc { margin: 12px 0 0; color: var(--muted); font-size: 15px; line-height: 1.75; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+  .btn-primary { height: 52px; padding: 0 26px; background: var(--coral); color: white; font-size: 15px; box-shadow: 0 12px 24px -12px rgba(232,121,92,.7); }
+  .btn-ghost { height: 52px; padding: 0 26px; background: white; color: var(--coral); font-size: 15px; border: 1.5px solid var(--coral); }
+  .hint { margin: 14px 0 0; color: #9a8f84; font-size: 12px; }
+  .cake-card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-height: 600px;
+    border-radius: 40px;
+    background: linear-gradient(135deg, #ffe0b8, #ffc29e);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .cake-card svg { width: 82%; max-width: 520px; height: auto; }
+  .flame { transform-box: fill-box; transform-origin: 50% 100%; transition: opacity .3s ease, transform .45s var(--spring); }
+  .smoke { opacity: 0; transition: opacity .6s ease; }
+  .cake-card.blown .flame { opacity: 0; transform: translateY(-8px) scale(.3); }
+  .cake-card.blown .smoke { opacity: 1; animation: rise 1.4s ease-out forwards; }
+  @keyframes rise { from { transform: translateY(0); } to { transform: translateY(-16px); opacity: 0; } }
+  .chip {
+    position: absolute; left: 28px; bottom: 28px;
+    height: 44px; padding: 0 18px; border-radius: 999px;
+    background: rgba(255,255,255,.92); color: var(--coral-deep);
+    display: inline-flex; align-items: center; font-weight: 800; font-size: 13px;
+  }
+  .section { padding: 72px clamp(20px, 7vw, 100px); }
+  .play { background: white; }
+  .eyebrow { font: 600 12px/1 ui-sans-serif, system-ui; letter-spacing: .12em; color: var(--coral); }
+  .section h2 { margin: 16px 0 32px; font-size: clamp(28px, 3.2vw, 36px); letter-spacing: -.03em; }
+  .cards { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; }
+  .play-card { min-height: 200px; padding: 30px 34px; border-radius: 26px; cursor: pointer; text-align: left; transition: transform 120ms ease-out; }
+  .play-card:active { transform: scale(.985); }
+  .play-card:focus-visible { outline: 3px solid rgba(232,121,92,.45); outline-offset: 4px; }
+  .play-card.one { background: #ffe3c7; }
+  .play-card.two { background: var(--mint); }
+  .play-card .num { font: 600 12px/1 ui-sans-serif, system-ui; letter-spacing: .08em; color: var(--coral-deep); }
+  .play-card.two .num { color: var(--mint-deep); }
+  .play-card strong { display: block; margin-top: 14px; font-size: 24px; }
+  .play-card span { display: block; margin-top: 10px; color: var(--muted); font-size: 13px; }
+  .wishes { background: #fdeede; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 56px; align-items: center; }
+  .wishes h2 { margin-bottom: 12px; }
+  .wish-cards { display: grid; grid-template-columns: 1.45fr 1fr; gap: 20px; }
+  .wish-card { min-height: 240px; padding: 32px; border-radius: 26px; display: flex; align-items: center; font-size: clamp(19px, 2vw, 22px); font-weight: 800; line-height: 1.6; }
+  .wish-card.white { background: white; }
+  .wish-card.yellow { background: var(--yellow); }
+  .end {
+    padding: 52px clamp(20px, 7vw, 100px);
+    background: var(--coral); color: white;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  }
+  .end strong { font-size: clamp(26px, 3vw, 40px); letter-spacing: -.03em; }
+  .end span { font: 500 13px/1 ui-sans-serif, system-ui; letter-spacing: .08em; color: #fff4e8; }
+  .modal {
+    position: fixed; inset: 0; z-index: 40;
+    display: grid; place-items: center; padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .modal.open { opacity: 1; pointer-events: auto; }
+  .modal-backdrop { position: absolute; inset: 0; background: rgba(29,29,31,.34); backdrop-filter: blur(6px); }
+  .modal-card {
+    position: relative; width: min(900px, 100%); min-height: 460px;
+    border-radius: 36px; background: white; padding: 48px;
+    display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center;
+    box-shadow: 0 40px 100px -30px rgba(29,29,31,.45);
+    transform: translateY(28px) scale(.92);
+    transition: transform .5s var(--spring);
+  }
+  .modal.open .modal-card { transform: translateY(0) scale(1); }
+  .modal-card svg { width: 100%; max-width: 400px; }
+  .modal-card .eyebrow { margin-bottom: 16px; display: block; }
+  .modal-card h3 { margin: 0 0 16px; font-size: clamp(26px, 3vw, 34px); line-height: 1.35; letter-spacing: -.03em; }
+  .modal-card p { margin: 0 0 28px; color: var(--muted); line-height: 1.8; }
+  .btn-accept { height: 48px; padding: 0 24px; color: white; background: var(--coral); font-size: 14px; }
+  .modal-close {
+    position: absolute; top: 22px; right: 26px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #f5efe8; color: var(--muted); font-size: 20px; line-height: 1;
+  }
+  .vent-area {
+    width: 100%; min-height: 150px; padding: 18px 20px;
+    border: 2px dashed rgba(232,121,92,.38); border-radius: 20px;
+    background: #fff9f0; color: var(--ink); font: inherit; font-size: 16px;
+    line-height: 1.7; resize: vertical; outline: none;
+  }
+  .vent-area:focus { border-color: var(--coral); }
+  .vent-area::placeholder { color: #b9a99a; }
+  .vent-area.burn { animation: burn .5s ease forwards; }
+  @keyframes burn {
+    50% { opacity: .4; transform: scale(.97) rotate(-1deg); filter: blur(1px); }
+    100% { opacity: 0; transform: scale(.9) translateY(-10px); filter: blur(4px); }
+  }
+  .toast {
+    position: fixed; left: 50%; bottom: 36px; z-index: 60;
+    transform: translate(-50%, 24px) scale(.9); opacity: 0;
+    background: var(--mint); color: var(--mint-deep);
+    padding: 12px 22px; border-radius: 999px; font-weight: 800; font-size: 14px;
+    pointer-events: none; transition: transform .42s var(--spring), opacity .25s ease;
+  }
+  .toast.show { transform: translate(-50%, 0) scale(1); opacity: 1; }
+  .confetti-piece {
+    position: fixed; top: 0; left: 0; width: 10px; height: 16px;
+    border-radius: 2px; pointer-events: none; z-index: 55;
+    animation: confetti-fall var(--dur) cubic-bezier(.2,.7,.4,1) forwards;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translate(var(--x), -20px) rotate(0deg); opacity: 1; }
+    100% { transform: translate(calc(var(--x) + var(--drift)), 105vh) rotate(var(--spin)); opacity: .9; }
+  }
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding-top: 48px; }
+    .cake-card { width: 100%; max-width: 520px; margin: 0 auto; }
+    .cards, .wishes, .wish-cards { grid-template-columns: 1fr; gap: 18px; }
+    .wishes { gap: 26px; }
+    .modal-card { grid-template-columns: 1fr; padding: 36px 28px; text-align: center; }
+    .modal-card svg { max-width: 240px; margin: 0 auto; }
+    .end { flex-direction: column; align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="logo"><span class="logo-mark">YH</span><span>霸总生日局</span></div>
+    <nav class="nav-links">
+      <a href="#gift">拆个礼物</a>
+      <a href="#" id="navBlow">吹个蜡烛</a>
+      <a href="#wishes">看点纸条</a>
+    </nav>
+    <button class="pill nav-cta" id="startBtn">开始玩呗</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="copy">
+        <span class="badge">初一限定 · 11.25</span>
+        <p class="open-note">看今天你听完年级会不太开心不知道你咋了但是就是希望你天天开心呀</p>
+        <h1>黄熠赫</h1>
+        <p class="hello">祝你生日快乐呀</p>
+        <p class="sub">初一才刚开局，别想那么多，开心最大。</p>
+        <div class="hero-actions">
+          <button class="pill btn-primary" id="giftBtn">点me拆礼物</button>
+          <button class="pill btn-ghost" id="blowBtn">快吹蜡烛吧！</button>
+        </div>
+      </div>
+      <div class="cake-card" id="cakeCard" aria-label="生日蛋糕，点击吹蜡烛按钮可以吹灭蜡烛">
+        <svg viewBox="0 0 520 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <ellipse cx="260" cy="402" rx="164" ry="16" fill="#b96a4e" opacity=".16"/>
+          <rect x="96" y="250" width="328" height="132" rx="22" fill="#fff7ec"/>
+          <path d="M96 272c22 0 22 24 44 24s22-24 44-24 22 24 44 24 22-24 44-24 22 24 44 24 22-24 44-24 22 24 44 24h16v-34c0-8-6-12-14-12H110c-8 0-14 4-14 12z" fill="#f5c9a8"/>
+          <rect x="150" y="178" width="220" height="92" rx="18" fill="#ffe7d2"/>
+          <path d="M150 198c20 0 20 22 40 22s20-22 40-22 20 22 40 22 20-22 40-22 20 22 40 22v-30c0-8-6-12-14-12H164c-8 0-14 4-14 12z" fill="#f7d3b4"/>
+          <g class="flame-group">
+            <rect x="182" y="120" width="14" height="58" rx="6" fill="#e8795c"/>
+            <rect x="226" y="108" width="14" height="70" rx="6" fill="#ffd45e"/>
+            <rect x="268" y="116" width="14" height="62" rx="6" fill="#7fc7a5"/>
+            <rect x="310" y="124" width="14" height="54" rx="6" fill="#e8795c"/>
+            <g class="flame">
+              <ellipse cx="189" cy="110" rx="9" ry="14" fill="#ffb23f"/>
+              <ellipse cx="233" cy="98" rx="9" ry="14" fill="#ffb23f"/>
+              <ellipse cx="275" cy="106" rx="9" ry="14" fill="#ffb23f"/>
+              <ellipse cx="317" cy="114" rx="9" ry="14" fill="#ffb23f"/>
+              <ellipse cx="189" cy="112" rx="4" ry="7" fill="#fff0a8"/>
+              <ellipse cx="233" cy="100" rx="4" ry="7" fill="#fff0a8"/>
+              <ellipse cx="275" cy="108" rx="4" ry="7" fill="#fff0a8"/>
+              <ellipse cx="317" cy="116" rx="4" ry="7" fill="#fff0a8"/>
+            </g>
+          </g>
+          <g class="smoke" fill="none" stroke="#b9ada3" stroke-width="3" stroke-linecap="round">
+            <path d="M194 62c-8-10 8-16 0-28"/><path d="M236 54c-8-10 8-16 0-28"/>
+            <path d="M278 60c-8-10 8-16 0-28"/><path d="M320 66c-8-10 8-16 0-28"/>
+          </g>
+          <circle cx="140" cy="316" r="5" fill="#e8795c"/><circle cx="204" cy="340" r="5" fill="#ffd45e"/>
+          <circle cx="282" cy="322" r="5" fill="#7fc7a5"/><circle cx="356" cy="344" r="5" fill="#e8795c"/>
+          <circle cx="74" cy="92" r="6" fill="#fff" opacity=".8"/><circle cx="444" cy="120" r="5" fill="#fff" opacity=".8"/>
+          <path d="M420 72l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="#fff4dc"/>
+        </svg>
+        <span class="chip">吹灭电子蜡烛 · 许个愿呗</span>
+      </div>
+    </section>
+
+    <section class="section play" id="play">
+      <span class="eyebrow">今天怎么玩？点两下就完事</span>
+      <h2>快乐不用等，自己点就有了。</h2>
+      <div class="cards">
+        <button class="play-card one" data-action="vent">
+          <span class="num">写吐槽</span>
+          <strong>点一下，写下每日怨气</strong>
+          <span>没人知道但是绝对解压！</span>
+        </button>
+        <button class="play-card two" data-action="gift">
+          <span class="num">02 / 拆礼物</span>
+          <strong>看看我写了啥</strong>
+          <span>没啥大道理，就几句大实话。</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section wishes" id="wishes">
+      <div>
+        <span class="eyebrow">给你留的几句</span>
+        <h2>不写长篇大论，<br>看着乐就行。</h2>
+      </div>
+      <div class="wish-cards">
+        <div class="wish-card white">被生气<br>小事别太往心里去</div>
+        <div class="wish-card yellow">被骂也不必浪费美好时光</div>
+      </div>
+    </section>
+
+    <section class="end">
+      <strong>今天你生日，你说了算！</strong>
+      <span>2026.11.25 · 初一限定</span>
+    </section>
+  </main>
+
+  <div class="modal" id="giftModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close aria-label="关闭">×</button>
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="210" cy="386" rx="134" ry="13" fill="#b96a4e" opacity=".14"/>
+        <rect x="86" y="218" width="248" height="156" rx="20" fill="#ffe7d2"/>
+        <rect x="74" y="196" width="272" height="46" rx="16" fill="#fff7ec"/>
+        <rect x="194" y="196" width="32" height="178" fill="#e8795c"/>
+        <path d="M210 196c-40-20-50-56-30-64s30 28 30 64z" fill="#e8795c"/>
+        <path d="M210 196c40-20 50-56 30-64s-30 28-30 64z" fill="#e8795c"/>
+        <path d="M112 190l-26-54 54 26z" fill="#ffd45e"/>
+        <path d="M308 190l26-54-54 26z" fill="#7fc7a5"/>
+        <circle cx="210" cy="196" r="15" fill="#ffd45e"/>
+      </svg>
+      <div>
+        <span class="eyebrow">给寿星的小纸条</span>
+        <h3 id="modalTitle">拆开啦！<br>这几句大实话送给你</h3>
+        <p>生日快乐 不必纠结于那些小事哦<br>初中，我绝对能陪你闹。</p>
+        <button class="pill btn-accept" id="acceptBtn">收下啦</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="ventModal" role="dialog" aria-modal="true" aria-labelledby="ventTitle">
+    <div class="modal-backdrop" data-close-vent></div>
+    <div class="modal-card" style="grid-template-columns:1fr;text-align:center;min-height:auto;padding:52px 48px;">
+      <button class="modal-close" data-close-vent aria-label="关闭">×</button>
+      <span class="eyebrow" style="margin-bottom:10px;">写吐槽</span>
+      <h3 id="ventTitle" style="margin-bottom:10px;">点一下，写下每日怨气</h3>
+      <p style="margin-bottom:22px;">没人知道但是绝对解压！</p>
+      <textarea class="vent-area" id="ventArea" placeholder="写下每日怨气" aria-label="写下每日怨气"></textarea>
+      <div style="margin-top:20px;">
+        <button class="pill btn-accept" id="ventSubmit">收下啦</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">愿望愿成真哦 · 开心+1</div>
+
+<script>
+  const cakeCard = document.getElementById('cakeCard');
+  const modal = document.getElementById('giftModal');
+  const toast = document.getElementById('toast');
+  const acceptBtn = document.getElementById('acceptBtn');
+  const colors = ['#e8795c', '#ffd45e', '#7fc7a5', '#ffc29e', '#ffffff'];
+  let toastTimer;
+
+  function burst(count = 26) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    for (let i = 0; i < count; i++) {
+      const piece = document.createElement('i');
+      piece.className = 'confetti-piece';
+      piece.style.setProperty('--x', (Math.random() * 100) + 'vw');
+      piece.style.setProperty('--drift', ((Math.random() - .5) * 180) + 'px');
+      piece.style.setProperty('--spin', (Math.random() * 900 - 450) + 'deg');
+      piece.style.setProperty('--dur', (2 + Math.random() * 1.6) + 's');
+      piece.style.background = colors[i % colors.length];
+      piece.style.animationDelay = (Math.random() * .25) + 's';
+      document.body.appendChild(piece);
+      piece.addEventListener('animationend', () => piece.remove(), { once: true });
+    }
+  }
+
+  function showToast(text) {
+    toast.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  function blowCandles() {
+    const blown = cakeCard.classList.toggle('blown');
+    if (blown) {
+      burst(26);
+      showToast('愿望愿成真哦 · 开心+1');
+    } else {
+      showToast('又许了一个啊，今天随便许');
+    }
+  }
+
+  function openGift() {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.querySelector('.modal-close').focus(), 60);
+  }
+
+  function closeGift() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    acceptBtn.textContent = '收下啦';
+  }
+
+  const ventModal = document.getElementById('ventModal');
+  const ventArea = document.getElementById('ventArea');
+
+  function openVent() {
+    ventModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => ventArea.focus(), 60);
+  }
+  function closeVent() {
+    ventModal.classList.remove('open');
+    document.body.style.overflow = '';
+    ventArea.classList.remove('burn');
+    ventArea.value = '';
+  }
+  document.querySelectorAll('[data-action="vent"]').forEach(el => el.addEventListener('click', openVent));
+  document.querySelectorAll('[data-close-vent]').forEach(el => el.addEventListener('click', closeVent));
+  document.getElementById('ventSubmit').addEventListener('click', () => {
+    if (!ventArea.value.trim()) { ventArea.focus(); return; }
+    ventArea.classList.add('burn');
+    burst(30);
+    showToast('收到啦，还是祝你生日快乐呀！');
+    setTimeout(closeVent, 480);
+  });
+
+  document.getElementById('blowBtn').addEventListener('click', blowCandles);
+  document.getElementById('navBlow').addEventListener('click', (e) => {
+    e.preventDefault();
+    blowCandles();
+    document.querySelector('.hero').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  document.querySelectorAll('[data-action="blow"]').forEach(el => el.addEventListener('click', blowCandles));
+  document.getElementById('giftBtn').addEventListener('click', openGift);
+  document.getElementById('startBtn').addEventListener('click', () => {
+    document.getElementById('play').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  document.querySelectorAll('[data-action="gift"]').forEach(el => el.addEventListener('click', openGift));
+  document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeGift));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeGift(); closeVent(); } });
+  acceptBtn.addEventListener('click', () => {
+    burst(40);
+    acceptBtn.textContent = '收好啦';
+    showToast('收到啦，还是祝你生日快乐呀！');
+  });
+</script>
+</body>
+</html>
